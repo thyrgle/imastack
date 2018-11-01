@@ -10,7 +10,7 @@ fn basic_add() {
 #[test]
 fn basic_sub() {
     assert_eq!(
-        imastack::eval("2 1 - print".to_string()),
+        imastack::eval("1 2 - print".to_string()),
         vec![1.0]);
 }
 
@@ -24,14 +24,14 @@ fn basic_mul() {
 #[test]
 fn basic_div() {
     assert_eq!(
-        imastack::eval("6 3 / print".to_string()),
+        imastack::eval("3 6 / print".to_string()),
         vec![2.0]);
 }
 
 #[test]
 fn div_by_zero_is_zero() {
     assert_eq!(
-        imastack::eval("1 0 / print".to_string()),
+        imastack::eval("0 1 / print".to_string()),
         vec![0.0]);
 }
 
