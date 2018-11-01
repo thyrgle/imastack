@@ -101,20 +101,17 @@ fn print_float(stack: &mut Vec<f64>) {
 fn execute_program(tokens: &[&str], stack: &mut Vec<f64>) {
     let mut i: usize = 0;
     loop {
-        match tokens.get(i) {
-            Some(tok) => {
-                match *tok {
-                    "+"     => add(stack),
-                    "-"     => sub(stack),
-                    "*"     => mul(stack),
-                    "/"     => div(stack),
-                    "dup"   => dup(stack),
-                    "swp"   => swp(stack),
-                    "jnz"   => jnz(&mut i, stack),
-                    "print" => print_float(stack),
-                    _       => parse_number(tok, stack)
-                }
-            },
+        let tok = tokens.get(i);
+        match tok {
+            Some(&"+")     => add(stack),
+            Some(&"-")     => sub(stack),
+            Some(&"*")     => mul(stack),
+            Some(&"/")     => div(stack),
+            Some(&"dup")   => dup(stack),
+            Some(&"swp")   => swp(stack),
+            Some(&"jnz")   => jnz(&mut i, stack),
+            Some(&"print") => print_float(stack),
+            Some(_)        => parse_number(tok.unwrap(), stack),
             None => break
         }
         i += 1;
