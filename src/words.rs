@@ -115,8 +115,8 @@ pub fn dup(stack: &mut Vec<f64>) {
 #[inline(always)]
 pub fn swp(stack: &mut Vec<f64>) {
     let (first, second) = get_ops!(stack);
-    stack.push(first);
     stack.push(second);
+    stack.push(first);
 }
 
 /// Pops off two values off the stack. If the first value is not zero, take the
