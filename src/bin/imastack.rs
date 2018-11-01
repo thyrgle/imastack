@@ -12,7 +12,7 @@ fn main() {
             .expect("Failed to read line");
         let output = imastack::eval(code.trim().to_string());
         for num in output {
-            print!("{}", num);
+            print!("{} ", num);
         }
         println!()
     }
