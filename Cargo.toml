@@ -1,0 +1,7 @@
+[package]
+name = "imastack"
+version = "0.1.0"
+authors = ["Christopher Sumnicht <csumnicht@berkeley.edu>"]
+
+[dependencies]
+rpds = "*"
