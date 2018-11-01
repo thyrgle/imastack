@@ -1,4 +1,4 @@
-/// Extracts two values off the top of a stack. 
+/// Extracts two values off the top of a stack.
 ///
 /// # Arguments
 ///
@@ -10,6 +10,16 @@ macro_rules! get_ops {
     }
 }
 
+/// Parses a numerical value to a float.
+///
+/// # Arguments
+///
+/// `token` - The value to be converted to a float.
+/// `stack` - The stack to push the token onto.
+///
+/// *Note* - If `parse_number` is **not** given a number, it will still return
+/// `0.0`.
+#[inline(always)]
 fn parse_number(token: &str, stack: &mut Vec<f64>) {
     let number = token.parse::<f64>().unwrap_or(0.0);
     stack.push(number);
@@ -19,7 +29,11 @@ fn parse_number(token: &str, stack: &mut Vec<f64>) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+/// *Note* - If no number is available to pop from the stack, a default value 
+/// of `0.0` is used.
+#[inline(always)]
 fn add(stack: &mut Vec<f64>) {
     let (a, b) = get_ops!(stack);
     stack.push(a + b);
@@ -29,7 +43,11 @@ fn add(stack: &mut Vec<f64>) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+/// *Note* - If no number is available to pop from the stack, a default value
+/// of `0.0` is used.
+#[inline(always)]
 fn sub(stack: &mut Vec<f64>) {
     let (a, b) = get_ops!(stack);
     stack.push(a - b);
@@ -39,7 +57,11 @@ fn sub(stack: &mut Vec<f64>) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+/// *Note* - If no number is available to pop from the stack, a default value
+/// of `0.0` is used.
+#[inline(always)]
 fn mul(stack: &mut Vec<f64>) {
     let (a, b) = get_ops!(stack);
     stack.push(a * b);
@@ -49,7 +71,12 @@ fn mul(stack: &mut Vec<f64>) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+/// *Note* - If no number is available to pop from the stack, a default value
+/// of `0.0` is used. If division by `0.0` occurs, then a value of `0.0` pushed
+/// to `stack` instead.
+#[inline(always)]
 fn div(stack: &mut Vec<f64>) {
     let (a, b) = get_ops!(stack);
     if b == 0.0 {
@@ -63,7 +90,11 @@ fn div(stack: &mut Vec<f64>) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+/// *Note* - If no number is available to pop from the stack, a default value
+/// of `0.0` is used, thus `0.0` is pushed on to the stack twice.
+#[inline(always)]
 fn dup(stack: &mut Vec<f64>) {
     let to_dup = stack.pop().unwrap_or(0.0);
     stack.push(to_dup);
@@ -74,7 +105,11 @@ fn dup(stack: &mut Vec<f64>) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+/// *Note* - If no number is available to pop from the stack, a default value
+/// of `0.0` is used.
+#[inline(always)]
 fn swp(stack: &mut Vec<f64>) {
     let (first, second) = get_ops!(stack);
     stack.push(first);
@@ -87,7 +122,9 @@ fn swp(stack: &mut Vec<f64>) {
 /// # Arguments
 ///
 /// * `reg` - The the current location of the register.
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from and push onto.
+///
+#[inline(always)]
 fn jnz(stack: &mut Vec<f64>, reg: &mut usize) {
     let (cond, jump) = get_ops!(stack);
     if cond != 0.0 {
@@ -99,7 +136,12 @@ fn jnz(stack: &mut Vec<f64>, reg: &mut usize) {
 ///
 /// # Arguments
 ///
-/// * `stack` - The stack to be mutated.
+/// * `stack` - The stack to pop from.
+/// * `output` - The output vector to push onto.
+///
+/// *Note* - Does not "print" to stdout, instead it prints to the `output` par-
+/// ameter. This is for better debugging and test.
+#[inline(always)]
 fn print_float(stack: &mut Vec<f64>, output: &mut Vec<f64>) {
     output.push(stack.pop().unwrap_or(0.0))
 }
@@ -135,8 +177,13 @@ fn execute_program(tokens: &[&str],
 }
 
 /// Evaluates a string of code.
+/// 
+/// # Arguments
 ///
 /// * `code` - The string of code to be executed.
+///
+/// *Note* The value returned is the "output" of the code. Output is not done
+/// through stdout for easier debugging.
 pub fn eval(code: String) -> Vec<f64> {
     let tokens: Vec<&str> = code.split(' ').collect();
     let mut stack: Vec<f64> = Vec::new();
