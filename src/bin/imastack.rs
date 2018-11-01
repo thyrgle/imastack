@@ -3,6 +3,7 @@ extern crate imastack;
 use std::io;
 use std::io::Write;
 
+/// Simple REPL for the imastack langauge.
 fn main() {
     loop {
         let mut code = String::new();

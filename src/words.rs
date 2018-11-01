@@ -1,3 +1,6 @@
+//! The `word` module contains the verbs and nouns that create a program. Verbs
+//! are functions (regardless of airity) and nouns are data.
+
 /// Extracts two values off the top of a stack.
 ///
 /// # Arguments
