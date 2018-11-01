@@ -10,6 +10,10 @@ fn main() {
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut code)
             .expect("Failed to read line");
-        imastack::eval(code.trim().to_string());
+        let output = imastack::eval(code.trim().to_string());
+        for num in output {
+            print!("{}", num);
+        }
+        println!()
     }
 }
