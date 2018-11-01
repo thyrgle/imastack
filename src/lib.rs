@@ -23,7 +23,7 @@ fn execute_program(tokens: &[&str],
             Some(&"jnz")   => words::jnz(stack, &mut reg),
             Some(&"print") => words::print_float(stack, output),
             Some(_)        => words::parse_number(tok.unwrap(), stack),
-            None => break
+            None           => break
         }
         reg += 1;
     }
