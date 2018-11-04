@@ -7,21 +7,21 @@ mod words;
 /// * `tokens` - A slice of tokens to be executed.
 /// * `stack` - The stack to keep the current state of the program.
 fn execute_program(tokens: &[&str], 
-                   stack: &mut Vec<f64>,
+                   stack: &mut words::Stack,
                    output: &mut Vec<f64>) -> Vec<f64> {
     // Analogous to the role of a "register" for a Turing machine.
     let mut reg: usize = 0;
     while let Some(tok) = tokens.get(reg) {
         match tok {
-            &"+"     => words::add(stack),
-            &"-"     => words::sub(stack),
-            &"*"     => words::mul(stack),
-            &"/"     => words::div(stack),
-            &"dup"   => words::dup(stack),
-            &"swp"   => words::swp(stack),
-            &"jnz"   => words::jnz(stack, &mut reg),
-            &"print" => words::print_float(stack, output),
-            _        => words::parse_number(tok, stack),
+            &"+"     => stack.add(),
+            &"-"     => stack.sub(),
+            &"*"     => stack.mul(),
+            &"/"     => stack.div(),
+            &"dup"   => stack.dup(),
+            &"swp"   => stack.swp(),
+            &"jnz"   => stack.jnz(&mut reg),
+            &"print" => stack.print_float(output),
+            _        => stack.parse_number(tok),
         }
         reg += 1;
     }
@@ -38,7 +38,7 @@ fn execute_program(tokens: &[&str],
 /// through stdout for easier debugging.
 pub fn eval(code: &str) -> Vec<f64> {
     let tokens: Vec<&str> = code.split(' ').collect();
-    let mut stack: Vec<f64> = Vec::new();
+    let mut stack = words::Stack {0: Vec::new()};
     let mut output: Vec<f64> = Vec::new();
     execute_program(tokens.as_slice(), &mut stack, &mut output)
 }
