@@ -39,7 +39,7 @@ fn div_by_zero_is_zero() {
 fn basic_swp() {
     assert_eq!(
         imastack::eval("1 2 swp print print"),
-        vec![2.0, 1.0]);
+        vec![1.0, 2.0]);
 
 }
 

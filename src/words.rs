@@ -127,8 +127,8 @@ impl Stack {
     #[inline(always)]
     pub fn swp(&mut self) {
         let (first, second) = self.get_ops();
-        self.push(second);
         self.push(first);
+        self.push(second);
     }
 
     /// Pops off two values off the stack. If the first value is not zero, take the
