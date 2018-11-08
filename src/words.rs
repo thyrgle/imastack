@@ -16,10 +16,6 @@ impl Stack {
     }
 
     /// Extracts two values off the top of a stack.
-    ///
-    /// # Arguments
-    ///
-    /// * `$stack` - stack to be mutated.
     #[inline(always)]
     pub fn get_ops(&mut self) -> (f64, f64) {
         (self.pop(), self.pop())
@@ -30,7 +26,6 @@ impl Stack {
     /// # Arguments
     ///
     /// `token` - The value to be converted to a float.
-    /// `stack` - The stack to push the token onto.
     ///
     /// *Note* - If `parse_number` is **not** given a number, it will still return
     /// `0.0`.
@@ -42,10 +37,6 @@ impl Stack {
 
     /// Pops the top two elements off the stack and adds them.
     ///
-    /// # Arguments
-    ///
-    /// * `stack` - The stack to pop from and push onto.
-    ///
     /// *Note* - If no number is available to pop from the stack, a default value 
     /// of `0.0` is used.
     #[inline(always)]
@@ -55,10 +46,6 @@ impl Stack {
     }
 
     /// Pops the top two elements off the stack and subtracts them.
-    ///
-    /// # Arguments
-    ///
-    /// * `stack` - The stack to pop from and push onto.
     ///
     /// *Note* - If no number is available to pop from the stack, a default value
     /// of `0.0` is used.
@@ -70,10 +57,6 @@ impl Stack {
 
     /// Pops the top two elements off the stack and multiplies them.
     ///
-    /// # Arguments
-    ///
-    /// * `stack` - The stack to pop from and push onto.
-    ///
     /// *Note* - If no number is available to pop from the stack, a default value
     /// of `0.0` is used.
     #[inline(always)]
@@ -83,10 +66,6 @@ impl Stack {
     }
 
     /// Pops the top two elements off the stack and divides them.
-    ///
-    /// # Arguments
-    ///
-    /// * `stack` - The stack to pop from and push onto.
     ///
     /// *Note* - If no number is available to pop from the stack, a default value
     /// of `0.0` is used. If division by `0.0` occurs, then a value of `0.0` pushed
@@ -103,10 +82,6 @@ impl Stack {
 
     /// Pops the top element off the stack and pushes two copies of it on the stack.
     ///
-    /// # Arguments
-    ///
-    /// * `stack` - The stack to pop from and push onto.
-    ///
     /// *Note* - If no number is available to pop from the stack, a default value
     /// of `0.0` is used, thus `0.0` is pushed on to the stack twice.
     #[inline(always)]
@@ -117,10 +92,6 @@ impl Stack {
     }
 
     /// Pops the top two elements off the stack and swaps their values.
-    ///
-    /// # Arguments
-    ///
-    /// * `stack` - The stack to pop from and push onto.
     ///
     /// *Note* - If no number is available to pop from the stack, a default value
     /// of `0.0` is used.
@@ -137,7 +108,6 @@ impl Stack {
     /// # Arguments
     ///
     /// * `reg` - The the current location of the register.
-    /// * `stack` - The stack to pop from and push onto.
     ///
     #[inline(always)]
     pub fn jnz(&mut self, reg: &mut usize) {
@@ -151,7 +121,6 @@ impl Stack {
     ///
     /// # Arguments
     ///
-    /// * `stack` - The stack to pop from.
     /// * `output` - The output vector to push onto.
     ///
     /// *Note* - Does not "print" to stdout, instead it prints to the `output` par-
