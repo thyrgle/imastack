@@ -11,8 +11,8 @@ fn main() {
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut code)
             .expect("Failed to read line");
-        let output = imastack::eval(code.trim());
-        for num in output {
+        let env = imastack::eval(code.trim());
+        for num in env.output {
             print!("{} ", num);
         }
         println!()

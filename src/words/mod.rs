@@ -1,21 +1,24 @@
 //! The `word` module contains the verbs and nouns that create a program. Verbs
 //! are functions (regardless of airity) and nouns are data.
 
-use ast;
 use ast::Float;
 
-pub struct Stack<'a>(pub Vec<&'a mut Float>);
+pub struct Env {
+    pub stack: Vec<Float>,
+    pub output: Vec<Float>
+}
 
-impl<'a> Stack<'a> {
+impl Env {
+
     #[inline(always)]
-    pub fn push(&mut self, item: &mut Float) {
-        self.0.push(item);
+    pub fn push(&mut self, item: Float) {
+        self.stack.push(item);
     }
 
     // helpful alias
     #[inline(always)]
     pub fn pop(&mut self) -> Float {
-        self.0.pop().unwrap_or(Float(0.0))
+        self.stack.pop().unwrap_or(Float(0.0))
     }
 
     /// Extracts two values off the top of a stack.
@@ -33,8 +36,8 @@ impl<'a> Stack<'a> {
     /// *Note* - If `parse_number` is **not** given a number, it will still return
     /// `0.0`.
     #[inline(always)]
-    pub fn push_number(&mut self, number: &Float) {
-        self.push(&mut number);
+    pub fn push_number(&mut self, number: Float) {
+        self.push(number);
     }
 
     /// Pops the top two elements off the stack and adds them.
@@ -44,7 +47,7 @@ impl<'a> Stack<'a> {
     #[inline(always)]
     pub fn add(&mut self) {
         let (a, b) = self.get_ops();
-        self.push(&mut (a + b));
+        self.push(a + b);
     }
 
     /// Pops the top two elements off the stack and subtracts them.
@@ -54,7 +57,7 @@ impl<'a> Stack<'a> {
     #[inline(always)]
     pub fn sub(&mut self) {
         let (a, b) = self.get_ops();
-        self.push(&mut (a - b));
+        self.push(a - b);
     }
 
     /// Pops the top two elements off the stack and multiplies them.
@@ -64,7 +67,7 @@ impl<'a> Stack<'a> {
     #[inline(always)]
     pub fn mul(&mut self) {
         let (a, b) = self.get_ops();
-        self.push(&mut (a * b));
+        self.push(a * b);
     }
 
     /// Pops the top two elements off the stack and divides them.
@@ -76,9 +79,9 @@ impl<'a> Stack<'a> {
     pub fn div(&mut self) {
         let (a, b) = self.get_ops();
         if b.0 == 0.0 {
-            self.push(&mut Float(0.0));
+            self.push(Float(0.0));
         } else {
-            self.push(&mut (a / b));
+            self.push(a / b);
         }
     }
 
@@ -88,9 +91,10 @@ impl<'a> Stack<'a> {
     /// of `0.0` is used, thus `0.0` is pushed on to the stack twice.
     #[inline(always)]
     pub fn dup(&mut self) {
-        let to_dup = &self.pop();
-        self.push(&mut to_dup);
-        self.push(&mut to_dup);
+        let to_dup = self.pop();
+        let copy = to_dup.clone();
+        self.push(to_dup);
+        self.push(copy);
     }
 
     /// Pops the top two elements off the stack and swaps their values.
@@ -100,8 +104,8 @@ impl<'a> Stack<'a> {
     #[inline(always)]
     pub fn swp(&mut self) {
         let (first, second) = self.get_ops();
-        self.push(&mut first);
-        self.push(&mut second);
+        self.push(first);
+        self.push(second);
     }
 
     /// Pops off two values off the stack. If the first value is not zero, take the
@@ -128,7 +132,8 @@ impl<'a> Stack<'a> {
     /// *Note* - Does not "print" to stdout, instead it prints to the `output` par-
     /// ameter. This is for better debugging and test.
     #[inline(always)]
-    pub fn print_float(&mut self, output: &mut Vec<ast::Float>) {
-        output.push(self.pop())
+    pub fn print_float(&mut self) {
+        let popped = self.pop();
+        self.output.push(popped);
     }
 }

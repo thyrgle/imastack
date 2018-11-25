@@ -2,13 +2,11 @@ extern crate strum;
 #[macro_use]
 extern crate strum_macros;
 
-mod ast;
-mod words;
+pub mod ast;
+pub mod words;
 
 use ast::Token;
-use ast::Float;
-use words::Stack;
-use std::str::FromStr;
+use words::Env;
 
 /// Given a list of commands, execute the commands.
 ///
@@ -17,33 +15,23 @@ use std::str::FromStr;
 /// * `tokens` - A slice of tokens to be executed.
 /// * `stack` - The stack to keep the current state of the program.
 fn execute_program(tokens: &[Token], 
-                   stack: &mut Stack,
-                   output: &mut Vec<Float>) -> Vec<Float> {
+                   env: &mut Env) {
     // Analogous to the role of a "register" for a Turing machine.
     let mut reg: usize = 0;
     while let Some(tok) = tokens.get(reg) {
         match tok {
-            Token::Add     => stack.add(),
-            Token::Sub     => stack.sub(),
-            Token::Mul     => stack.mul(),
-            Token::Div     => stack.div(),
-            Token::Dup     => stack.dup(),
-            Token::Swp     => stack.swp(),
-            Token::Jnz     => stack.jnz(&mut reg),
-            Token::Print   => stack.print_float(output),
-            _              => stack.push_number(&mut (*tok).into()),
+            Token::Add       => env.add(),
+            Token::Sub       => env.sub(),
+            Token::Mul       => env.mul(),
+            Token::Div       => env.div(),
+            Token::Dup       => env.dup(),
+            Token::Swp       => env.swp(),
+            Token::Jnz       => env.jnz(&mut reg),
+            Token::Print     => env.print_float(),
+            Token::Number(x) => env.push_number(x.clone()),
         }
         reg += 1;
     }
-    output.to_vec()
-}
-
-pub fn compile_program<'a>(tokens: &[&str]) -> &'a [Token] {
-    let mut ast: Vec<Token> = Vec::new();
-    for token in tokens {
-        ast.push(Token::from_str(token).unwrap());
-    }
-    ast.as_slice()
 }
 
 /// Evaluates a string of code.
@@ -54,10 +42,13 @@ pub fn compile_program<'a>(tokens: &[&str]) -> &'a [Token] {
 ///
 /// *Note* The value returned is the "output" of the code. Output is not done
 /// through stdout for easier debugging.
-pub fn eval(code: &str) -> Vec<Float> {
+pub fn eval(code: &str) -> Env {
     let tokens: Vec<&str> = code.split(' ').collect();
-    let mut stack = Stack {0: Vec::new()};
-    let mut output: Vec<Float> = Vec::new();
-    let ast = compile_program(tokens.as_slice());
-    execute_program(ast, &mut stack, &mut output)
+    let mut env = Env {
+        stack: Vec::new(),
+        output: Vec::new(),
+    };
+    let ast = ast::compile_program(tokens);
+    execute_program(ast.as_slice(), &mut env);
+    env
 }
