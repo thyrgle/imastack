@@ -5,6 +5,11 @@ use std::ops::Sub;
 use std::ops::Mul;
 use std::ops::Div;
 
+
+/// Wrapper for `f64`. 
+///
+/// *Note* This is needed for `strum` to operate correctly as `From<&'a str>`
+/// needs to be implemented, which is impossible with a bare `f64`.
 #[derive(Debug)]
 pub struct Float(pub f64);
 
@@ -112,6 +117,10 @@ impl Into<Float> for Token {
     }
 }
 
+/// Compiles a vector of stringy tokens into the a vector of `Token`s.
+/// 
+/// *Note* It tires the best it can, if the token can't be parsed, convert it
+/// to a `Float(0.0)` as default.
 pub fn compile_program(tokens: Vec<&str>) -> Vec<Token> {
     let mut ast = Vec::new();
     for tok in tokens {
