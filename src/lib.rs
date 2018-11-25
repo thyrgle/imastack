@@ -48,7 +48,7 @@ pub fn eval(code: &str) -> Env {
         stack: Vec::new(),
         output: Vec::new(),
     };
-    let ast = ast::compile_program(tokens);
+    let ast = ast::compile_program(tokens.as_slice());
     execute_program(ast.as_slice(), &mut env);
     env
 }

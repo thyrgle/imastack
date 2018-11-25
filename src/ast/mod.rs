@@ -121,7 +121,7 @@ impl Into<Float> for Token {
 /// 
 /// *Note* It tires the best it can, if the token can't be parsed, convert it
 /// to a `Float(0.0)` as default.
-pub fn compile_program(tokens: Vec<&str>) -> Vec<Token> {
+pub fn compile_program(tokens: &[&str]) -> Vec<Token> {
     let mut ast = Vec::new();
     for tok in tokens {
         let res = match Token::from_str(tok) {
