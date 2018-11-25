@@ -98,14 +98,6 @@ pub enum Token {
     Number(Float)
 }
 
-/*impl From<&Float> for Float {
-    #[inline]
-    fn from(f: &Float) -> Self {
-        (*f).clone()
-    }
-}*/
-
-
 impl Into<Float> for Token {
     /// Convets Token into Float.
     ///
