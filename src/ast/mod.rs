@@ -1,3 +1,7 @@
+//! This module contains functions and structures related to the AST of the im-
+//! astack language. Most notably, it converts between "string" *tokens* and e-
+//! num representation.
+
 use std::str::FromStr;
 use std::fmt;
 use std::ops::Add;

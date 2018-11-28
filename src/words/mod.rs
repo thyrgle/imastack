@@ -3,19 +3,23 @@
 
 use ast::Float;
 
+/// Represents and "environment" for a programming language. In this small lan-
+/// guage it is simply a "stack" that stores numbers and an "output vector" th-
+/// at captures what the output would be.
 pub struct Env {
     pub stack: Vec<Float>,
     pub output: Vec<Float>
 }
 
 impl Env {
-
+    
+    /// Helper function for pushing onto the environment's stack.
     #[inline(always)]
     pub fn push(&mut self, item: Float) {
         self.stack.push(item);
     }
 
-    // helpful alias
+    /// Helper function for pushing onto the environment's stack.
     #[inline(always)]
     pub fn pop(&mut self) -> Float {
         self.stack.pop().unwrap_or(Float(0.0))
@@ -111,8 +115,6 @@ impl Env {
     /// Pops off two values off the stack. If the first value is not zero, take the
     /// value of the second value and jump to that location in code.
     ///
-    /// # Arguments
-    ///
     /// * `reg` - The the current location of the register.
     ///
     #[inline(always)]
@@ -124,10 +126,6 @@ impl Env {
     }
 
     /// Prints the top value of a particular stack.
-    ///
-    /// # Arguments
-    ///
-    /// * `output` - The output vector to push onto.
     ///
     /// *Note* - Does not "print" to stdout, instead it prints to the `output` par-
     /// ameter. This is for better debugging and test.
