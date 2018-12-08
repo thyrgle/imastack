@@ -1,23 +1,33 @@
 //! The `word` module contains the verbs and nouns that create a program. Verbs
 //! are functions (regardless of airity) and nouns are data.
 
-pub struct Stack(pub Vec<f64>);
+use ast::Float;
 
-impl Stack {
+/// Represents and "environment" for a programming language. In this small lan-
+/// guage it is simply a "stack" that stores numbers and an "output vector" th-
+/// at captures what the output would be.
+pub struct Env {
+    pub stack: Vec<Float>,
+    pub output: Vec<Float>
+}
+
+impl Env {
+    
+    /// Helper function for pushing onto the environment's stack.
     #[inline(always)]
-    pub fn push(&mut self, item: f64) {
-        self.0.push(item);
+    pub fn push(&mut self, item: Float) {
+        self.stack.push(item);
     }
 
-    // helpful alias
+    /// Helper function for pushing onto the environment's stack.
     #[inline(always)]
-    pub fn pop(&mut self) -> f64 {
-        self.0.pop().unwrap_or(0.0)
+    pub fn pop(&mut self) -> Float {
+        self.stack.pop().unwrap_or(Float(0.0))
     }
 
     /// Extracts two values off the top of a stack.
     #[inline(always)]
-    pub fn get_ops(&mut self) -> (f64, f64) {
+    pub fn get_ops(&mut self) -> (Float, Float) {
         (self.pop(), self.pop())
     }
 
@@ -30,8 +40,7 @@ impl Stack {
     /// *Note* - If `parse_number` is **not** given a number, it will still return
     /// `0.0`.
     #[inline(always)]
-    pub fn parse_number(&mut self, token: &str) {
-        let number = token.parse::<f64>().unwrap_or(0.0);
+    pub fn push_number(&mut self, number: Float) {
         self.push(number);
     }
 
@@ -73,8 +82,8 @@ impl Stack {
     #[inline(always)]
     pub fn div(&mut self) {
         let (a, b) = self.get_ops();
-        if b == 0.0 {
-            self.push(0.0);
+        if b.0 == 0.0 {
+            self.push(Float(0.0));
         } else {
             self.push(a / b);
         }
@@ -87,8 +96,9 @@ impl Stack {
     #[inline(always)]
     pub fn dup(&mut self) {
         let to_dup = self.pop();
+        let copy = to_dup.clone();
         self.push(to_dup);
-        self.push(to_dup);
+        self.push(copy);
     }
 
     /// Pops the top two elements off the stack and swaps their values.
@@ -105,28 +115,23 @@ impl Stack {
     /// Pops off two values off the stack. If the first value is not zero, take the
     /// value of the second value and jump to that location in code.
     ///
-    /// # Arguments
-    ///
     /// * `reg` - The the current location of the register.
     ///
     #[inline(always)]
     pub fn jnz(&mut self, reg: &mut usize) {
         let (cond, jump) = self.get_ops();
-        if cond != 0.0 {
-            *reg = jump as usize;
+        if cond.0 != 0.0 {
+            *reg = jump.into();
         }
     }
 
     /// Prints the top value of a particular stack.
     ///
-    /// # Arguments
-    ///
-    /// * `output` - The output vector to push onto.
-    ///
     /// *Note* - Does not "print" to stdout, instead it prints to the `output` par-
     /// ameter. This is for better debugging and test.
     #[inline(always)]
-    pub fn print_float(&mut self, output: &mut Vec<f64>) {
-        output.push(self.pop())
+    pub fn print_float(&mut self) {
+        let popped = self.pop();
+        self.output.push(popped);
     }
 }
