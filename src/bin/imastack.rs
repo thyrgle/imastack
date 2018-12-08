@@ -54,11 +54,15 @@ fn main() {
             }
         };
         let env = imastack::eval(&code[current_line].as_str());
-        let num = env.output.last().unwrap_or(&imastack::ast::Float(0.0));
+        let mut footer = String::new();
+        for num in env.output {
+            footer.push_str(&num.to_string());
+            footer.push(' ');
+        }
         ncurses::mv(ncurses::LINES() - 1, 0);
         ncurses::clrtoeol();
         ncurses::mvprintw(ncurses::LINES() - 1,
-                          ncurses::COLS() - num.to_string().len() as i32,
-                          &mut num.to_string());
+                          ncurses::COLS() - footer.len() as i32,
+                          &mut footer.to_string());
     }
 }
