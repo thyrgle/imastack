@@ -1,5 +1,5 @@
-//! This the REPL for the imastack language. The last output is printed at the
-//! bottom of the screen.
+//! This the REPL for the imastack language. The output of the current line is
+//! displayed at the bottom of the screen.
 extern crate imastack;
 extern crate ncurses;
 

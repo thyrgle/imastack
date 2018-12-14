@@ -14,18 +14,8 @@ use std::ops::Div;
 ///
 /// *Note* This is needed for `strum` to operate correctly as `From<&'a str>`
 /// needs to be implemented, which is impossible with a bare `f64`.
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Float(pub f64);
-
-impl Clone for Float {
-    fn clone(&self) -> Float { Float(self.0) }
-}
-
-impl PartialEq for Float {
-    fn eq(&self, other: &Float) -> bool {
-        self.0 == other.0
-    }
-}
 
 impl<'a> From<&'a str> for Float {
     #[inline]
