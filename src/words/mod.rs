@@ -1,7 +1,7 @@
 //! The `word` module contains the verbs and nouns that create a program. Verbs
 //! are functions (regardless of airity) and nouns are data.
 
-use ast::Float;
+use ast::float::Float;
 
 /// Represents and "environment" for a programming language. In this small lan-
 /// guage it is simply a "stack" that stores numbers and an "output vector" th-

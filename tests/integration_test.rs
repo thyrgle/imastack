@@ -1,5 +1,5 @@
 extern crate imastack;
-use imastack::ast::Float;
+use imastack::ast::float::Float;
 
 #[test]
 fn basic_add() {
