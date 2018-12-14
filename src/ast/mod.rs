@@ -14,7 +14,7 @@ use std::ops::Div;
 ///
 /// *Note* This is needed for `strum` to operate correctly as `From<&'a str>`
 /// needs to be implemented, which is impossible with a bare `f64`.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Copy)]
 pub struct Float(pub f64);
 
 impl<'a> From<&'a str> for Float {

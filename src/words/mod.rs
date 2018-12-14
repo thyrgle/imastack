@@ -96,7 +96,7 @@ impl Env {
     #[inline(always)]
     pub fn dup(&mut self) {
         let to_dup = self.pop();
-        let copy = to_dup.clone();
+        let copy = to_dup;
         self.push(to_dup);
         self.push(copy);
     }
