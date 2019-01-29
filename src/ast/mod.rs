@@ -6,6 +6,7 @@ pub mod float;
 
 use std::str::FromStr;
 
+#[derive(Copy)]
 #[derive(EnumString)]
 pub enum Token {
     #[strum(serialize="+")]
@@ -27,6 +28,11 @@ pub enum Token {
     #[strum(default="true")]
     Number(float::Float)
 }
+
+impl Clone for Token {
+    fn clone(&self) -> Token { *self }
+}
+
 
 impl Into<float::Float> for Token {
     /// Convets Token into Float.
