@@ -1,6 +1,5 @@
 //! Thin wrapper of primitive f64 type. Needed for use with `strum` library.
 
-use std::str::FromStr;
 use std::fmt;
 use std::ops::Add;
 use std::ops::Sub;
