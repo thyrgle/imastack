@@ -6,9 +6,7 @@ pub mod float;
 
 use std::str::FromStr;
 
-#[derive(Copy, Clone)]
-#[derive(Debug)]
-#[derive(EnumString)]
+#[derive(Copy, Clone, Debug, EnumString)]
 pub enum Token {
     #[strum(serialize="+")]
     Add,
